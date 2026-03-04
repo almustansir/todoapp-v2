@@ -30,19 +30,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <header className="flex justify-between items-center mb-12 glass p-6 rounded-2xl">
-        <div>
-          <h1 className="text-2xl font-bold">TodoApp v2</h1>
-          <p className="text-sm text-gray-400">{user.email}</p>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="px-4 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500 hover:text-white transition"
-        >
-          Sign Out
-        </button>
-      </header>
-
       <main>
         <h2 className="text-4xl font-bold mb-4">My Tasks</h2>
         <div className="glass p-12 rounded-3xl border-dashed border-2 border-white/5 text-center">
