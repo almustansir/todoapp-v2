@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Current Dashboard Status:
+
+- [x] Authentication (Login/Signup toggle)
+- [x] Real-time CRUD (Create, Read, Update, Delete)
+- [x] Search (Instant client-side)
+- [x] Filtering (Status-based)
+
 ## Getting Started
 
 First, run the development server:
