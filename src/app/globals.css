@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background-start: rgb(0, 0, 0);
+  --color-background-end: rgb(10, 10, 15);
+}
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-background-end)
+    )
+    var(--color-background-start);
+  min-height: 100vh;
+}
+
+/* In v4, we use @utility to create custom classes */
+@utility glass {
+  background-color: oklch(1 0 0 / 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid oklch(1 0 0 / 0.1);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(1 0 0 / 0.1);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(1 0 0 / 0.2);
+}
