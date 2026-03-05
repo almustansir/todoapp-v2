@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background-start: rgb(0, 0, 0);
-  --color-background-end: rgb(10, 10, 15);
+  --animate-aurora: aurora 20s linear infinite;
+
+  @keyframes aurora {
+    from {
+      background-position: 50% 50%, 50% 50%;
+    }
+    to {
+      background-position: 350% 50%, 350% 50%;
+    }
+  }
 }
 
 :root {
@@ -10,14 +18,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--color-background-end)
-    )
-    var(--color-background-start);
-  min-height: 100vh;
+  @apply bg-slate-950 text-slate-200 antialiased overflow-x-hidden;
 }
 
 /* In v4, we use @utility to create custom classes */

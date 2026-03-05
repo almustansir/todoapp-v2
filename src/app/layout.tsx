@@ -1,6 +1,8 @@
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 export default function RootLayout({
   children,
@@ -9,11 +11,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen flex flex-col relative">
+        <AnimatedBackground />
         <AuthProvider>
           <Navbar />
-          {/* pt-24 provides space for the fixed navbar */}
-          <main className="pt-24 px-4">{children}</main>
+          <main className="grow pt-24 px-4 relative z-10">{children}</main>
+          <Footer />
         </AuthProvider>
       </body>
     </html>
