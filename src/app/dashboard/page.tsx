@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase/config";
+import { useRouter } from "next/navigation"; // Ensure this import exists
 import {
   collection,
   query,
@@ -19,12 +20,14 @@ import {
 } from "@/services/taskService";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   // for filter UI
   const counts = {
@@ -54,8 +57,15 @@ export default function Dashboard() {
     return matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth"); // Redirect to auth if not logged in
+    }
+  }, [user, loading, router]);
+
   // Real-time listener for user-specific tasks
   useEffect(() => {
+    // 1. Guard clause: If no user, don't return anything (implicitly returns undefined/void)
     if (!user) return;
 
     const q = query(
@@ -64,6 +74,7 @@ export default function Dashboard() {
       orderBy("createdAt", "desc"),
     );
 
+    // 2. onSnapshot returns a function that unsubscribes the listener
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const taskData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -72,8 +83,17 @@ export default function Dashboard() {
       setTasks(taskData);
     });
 
+    // 3. Always return the unsubscribe function for cleanup
     return () => unsubscribe();
   }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   // Logic to clear form and exit edit mode
   const cancelEdit = () => {
@@ -84,21 +104,68 @@ export default function Dashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !user) return;
 
-    if (editingId) {
-      // Logic for UPDATING
-      await updateTask(editingId, title, desc);
-      setEditingId(null);
-    } else {
-      // Logic for CREATING
-      await addTask(user.uid, title, desc);
+    // ADD THIS LINE: If there's no title, no user, or we're already submitting, stop.
+    if (!title.trim() || !user || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      if (editingId) {
+        await updateTask(editingId, title, desc);
+        setEditingId(null);
+      } else {
+        // TypeScript now knows 'user' is NOT null here because of the check above
+        await addTask(user.uid, title, desc);
+      }
+      cancelEdit();
+      setTitle("");
+      setDesc("");
+    } catch (err) {
+      console.error("Failed to save task:", err);
+    } finally {
+      setIsSubmitting(false);
     }
-    cancelEdit(); // Reusing the function here to clean up
-
-    setTitle("");
-    setDesc("");
   };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!title.trim() || isSubmitting) return;
+
+  //   setIsSubmitting(true);
+  //   try {
+  //     if (editingId) {
+  //       // Logic for UPDATING
+  //       await updateTask(editingId, title, desc);
+  //       setEditingId(null);
+  //     } else {
+  //       // Logic for CREATING
+  //       await addTask(user.uid, title, desc);
+  //     }
+  //     cancelEdit(); // Reusing the function here to clean up
+  //     setTitle("");
+  //     setDesc("");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!title.trim() || !user) return;
+
+  //   if (editingId) {
+  //     // Logic for UPDATING
+  //     await updateTask(editingId, title, desc);
+  //     setEditingId(null);
+  //   } else {
+  //     // Logic for CREATING
+  //     await addTask(user.uid, title, desc);
+  //   }
+  //   cancelEdit(); // Reusing the function here to clean up
+
+  //   setTitle("");
+  //   setDesc("");
+  // };
 
   const startEdit = (task: Task) => {
     setEditingId(task.id);
@@ -130,7 +197,10 @@ export default function Dashboard() {
                 className="w-full bg-white/5 border border-white/10 p-3 rounded-xl focus:border-blue-500 outline-none h-20 text-sm"
               />
               <div className="flex gap-2">
-                <button className="flex-1 bg-blue-600 active:scale-95 py-4 rounded-xl font-bold transition-transform">
+                <button
+                  disabled={isSubmitting}
+                  className={`flex-1 bg-blue-600 active:scale-95 py-4 rounded-xl font-bold transition-transform ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
                   {editingId ? "Update Task" : "Add Task"}
                 </button>
                 {editingId && (
@@ -200,6 +270,13 @@ export default function Dashboard() {
 
       {/* List Section */}
       <div className="space-y-3 px-1">
+        {filteredTasks.length === 0 && (
+          <div className="text-center py-20 opacity-50">
+            <p className="text-sm font-medium">Your task list is empty.</p>
+            <p className="text-xs">Add a task above to get started!</p>
+          </div>
+        )}
+
         {filteredTasks.map((task) => (
           <div
             key={task.id}

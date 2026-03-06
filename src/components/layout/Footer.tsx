@@ -7,7 +7,7 @@ export default function Footer() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
           </span>
-          Work in Progress — v2.0.0
+          © 2026 TodoApp v2
         </div>
 
         <a
