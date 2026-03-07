@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --animate-aurora: aurora 20s linear infinite;
+  /* --animate-aurora: aurora 20s linear infinite; */
 
   @keyframes aurora {
     from {
