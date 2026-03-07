@@ -1,6 +1,9 @@
+"use client";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
 export default function Hero() {
+  const { user } = useAuth();
   return (
     <main className="relative min-h-[calc(100vh-160px)] flex flex-col items-center justify-center px-6 text-center">
       {/* Decorative background glow for mobile depth */}
@@ -23,12 +26,30 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Link
+          {/* <Link
             href="/auth"
             className="w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 active:scale-95 transition-all shadow-xl shadow-white/5"
           >
             Get Started
-          </Link>
+          </Link> */}
+
+          {user ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 active:scale-95 transition-all shadow-xl shadow-white/5"
+              >
+                Get Started
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/auth"
+              className="w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 active:scale-95 transition-all shadow-xl shadow-white/5"
+            >
+              Get Started
+            </Link>
+          )}
 
           <a
             href="https://github.com/almustansir/todoapp-v2"
