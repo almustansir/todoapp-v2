@@ -81,6 +81,12 @@ export default function Navbar() {
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                 <span className="text-xs font-bold capitalize">{username}</span>
               </Link>
+              <button
+                onClick={handleLogout}
+                className="text-xs font-bold px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 active:scale-95 transition-all hover:bg-red-500 hover:text-white"
+              >
+                Logout
+              </button>
             </>
           ) : (
             <Link
