@@ -26,13 +26,6 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          {/* <Link
-            href="/auth"
-            className="w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 active:scale-95 transition-all shadow-xl shadow-white/5"
-          >
-            Get Started
-          </Link> */}
-
           {user ? (
             <>
               <Link

@@ -65,3 +65,13 @@ export const updateTask = async (
 export const deleteTask = async (taskId: string) => {
   return await deleteDoc(doc(db, COLLECTION_NAME, taskId));
 };
+
+// for taskItem component
+export interface Task {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  status: boolean;
+  createdAt: any; // or FieldValue
+}

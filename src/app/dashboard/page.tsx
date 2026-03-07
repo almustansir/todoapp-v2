@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase/config";
-import { useRouter } from "next/navigation"; // Ensure this import exists
+import { useRouter } from "next/navigation";
+import TaskItem from "@/components/todo/TaskItem";
 import {
   collection,
   query,
@@ -127,46 +128,6 @@ export default function Dashboard() {
     }
   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (!title.trim() || isSubmitting) return;
-
-  //   setIsSubmitting(true);
-  //   try {
-  //     if (editingId) {
-  //       // Logic for UPDATING
-  //       await updateTask(editingId, title, desc);
-  //       setEditingId(null);
-  //     } else {
-  //       // Logic for CREATING
-  //       await addTask(user.uid, title, desc);
-  //     }
-  //     cancelEdit(); // Reusing the function here to clean up
-  //     setTitle("");
-  //     setDesc("");
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (!title.trim() || !user) return;
-
-  //   if (editingId) {
-  //     // Logic for UPDATING
-  //     await updateTask(editingId, title, desc);
-  //     setEditingId(null);
-  //   } else {
-  //     // Logic for CREATING
-  //     await addTask(user.uid, title, desc);
-  //   }
-  //   cancelEdit(); // Reusing the function here to clean up
-
-  //   setTitle("");
-  //   setDesc("");
-  // };
-
   const startEdit = (task: Task) => {
     setEditingId(task.id);
     setTitle(task.title);
@@ -268,7 +229,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* List Section */}
+      {/* List Section if empty */}
       <div className="space-y-3 px-1">
         {filteredTasks.length === 0 && (
           <div className="text-center py-20 opacity-50">
@@ -276,60 +237,18 @@ export default function Dashboard() {
             <p className="text-xs">Add a task above to get started!</p>
           </div>
         )}
+      </div>
 
+      {/* List Section */}
+      <div className="space-y-3">
         {filteredTasks.map((task) => (
-          <div
+          <TaskItem
             key={task.id}
-            className="glass p-4 rounded-2xl flex items-center justify-between active:bg-white/5 transition-colors"
-          >
-            <div className="flex items-center gap-4 flex-1">
-              {/* Larger Checkbox Hitbox */}
-              <label className="relative flex items-center p-2 rounded-full cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={task.status}
-                  onChange={() => toggleTaskStatus(task.id, task.status)}
-                  className="w-6 h-6 rounded-lg accent-blue-500 border-white/20"
-                />
-              </label>
-
-              <div
-                onClick={() => startEdit(task)}
-                className="flex-1 cursor-pointer"
-              >
-                <h3
-                  className={`font-medium text-[17px] leading-tight ${task.status ? "line-through text-gray-500" : "text-white"}`}
-                >
-                  {task.title}
-                </h3>
-                {task.description && (
-                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
-                    {task.description}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Swipe actions replacement for desktop 'hover' */}
-            <button
-              onClick={() => deleteTask(task.id)}
-              className="p-2 text-gray-600 hover:text-red-500 active:text-red-400"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                />
-              </svg>
-            </button>
-          </div>
+            task={task}
+            onToggle={toggleTaskStatus}
+            onDelete={deleteTask}
+            onEdit={startEdit}
+          />
         ))}
       </div>
     </div>
