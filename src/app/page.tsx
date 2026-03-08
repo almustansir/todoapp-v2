@@ -15,12 +15,12 @@ export default function Hero() {
           TodoApp v2
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent leading-[1.1]">
+        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-linear-to-b from-white to-white/50 bg-clip-text text-transparent leading-[1.1]">
           Master your <br />
           <span className="text-blue-500">Productivity.</span>
         </h1>
 
-        <p className="text-base md:text-lg text-gray-400 max-w-[280px] md:max-w-md mx-auto leading-relaxed">
+        <p className="text-base md:text-lg text-gray-400 max-w-70 md:max-w-md mx-auto leading-relaxed">
           A clean, scalable task manager built with Next.js 16 and Firebase.
           Fast as lightning on any device.
         </p>
