@@ -109,7 +109,7 @@ export default function ProfilePage() {
 
             {/* Account Info Stats */}
             <div className="bg-white/5 rounded-2xl p-5 text-left space-y-3 border border-white/5">
-              <div className="flex justify-between items-center text-xs">
+              {/* <div className="flex justify-between items-center text-xs">
                 <span className="text-gray-500 font-medium">
                   Account Status
                 </span>
@@ -117,7 +117,7 @@ export default function ProfilePage() {
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                   Verified
                 </span>
-              </div>
+              </div> */}
               <div className="flex justify-between items-center text-xs border-t border-white/5 pt-3">
                 <span className="text-gray-500 font-medium">Member Since</span>
                 <span className="text-gray-300">
