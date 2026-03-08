@@ -95,7 +95,7 @@ export default function ProfilePage() {
         {!isEditing ? (
           <div className="space-y-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Avatar Circle */}
-            <div className="w-24 h-24 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-full mx-auto flex items-center justify-center text-4xl font-bold text-white shadow-xl shadow-blue-500/20">
+            <div className="w-24 h-24 bg-linear-to-tr from-blue-600 to-blue-400 rounded-full mx-auto flex items-center justify-center text-4xl font-bold text-white shadow-xl shadow-blue-500/20">
               {user.displayName?.[0]?.toUpperCase() ||
                 user.email?.[0]?.toUpperCase()}
             </div>
